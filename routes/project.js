@@ -2,6 +2,8 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const router = express.Router();
 
+const axios = require("axios");
+
 // Import du modèle Offer
 const Project = require("../models/Project");
 
@@ -140,6 +142,17 @@ router.post(
 // );
 
 // ----------- ROUTE DELETE OFFER ------------
+
+// -----------ROUTE READ ALL PROJECTS ---------
+
+router.get("/projects", async (req, res) => {
+  try {
+    const projects = await Project.find();
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // ----------- ROUTE SORT OFFER ------------
 
