@@ -115,37 +115,55 @@ router.post(
 
 // ----------- ROUTE UPDATE OFFER ------------
 
-// router.put(
-//   "/offer/update/:id",
-//   fileUpload(),
-//   isAuthenticated,
-//   async (req, res) => {
-//     try {
-//       const offerToUpdate = await Offer.findById(req.params.id);
-//       console.log(offerToUpdate);
+router.put(
+  "/project/update/:id",
+  fileUpload(),
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const projectToUpdate = await Project.findById(req.params.id);
+      console.log(projectToUpdate);
 
-//       // const { title, description, price, condition, city, brand, size, color } =
-//       //   req.body;
+      // const {
+      //   title,
+      //   date,
+      //   description,
+      //   order,
+      //   tag,
+      //   repoback,
+      //   repofront,
+      //   figma,
+      //   url,
+      //   video,
+      //   front,
+      //   back,
+      //   database,
+      //   server,
+      //   packages,
+      //   isPublished,
+      // } = req.body;
 
-//       // // Je transforme mon image en une string lisible par cloudinary
-//       // const transformedPicture = convertToBase64(req.files.picture);
+      const preview = req.files?.preview;
 
-//       offerToUpdate.title = title;
-//       offerToUpdate.description = description;
-//       offerToUpdate.price = price;
-//       offerToUpdate.condition = condition;
-//       offerToUpdate.city = city;
-//       offerToUpdate.brand = brand;
-//       offerToUpdate.size = size;
-//       offerToUpdate.color = color;
-//       offerToUpdate.picture = picture;
+      if (preview === undefined) {
+        projectToUpdate.preview = projectToUpdate.preview;
+      } else {
+        // transforming image in string readable by cloudinary
+        const transformedPicture = convertToBase64(preview);
+        // sending request to cloudianry for uploading my image
+        const result = await cloudinary.uploader.upload(transformedPicture, {
+          folder: `portfolio/projects/${projectToUpdate._id}`,
+        });
 
-//       res.status(201).json("Ok");
-//     } catch (error) {
-//       res.status(500).json({ message: error.message });
-//     }
-//   }
-// );
+        projectToUpdate.preview = result;
+      }
+      await projectToUpdate.save();
+      res.json(projectToUpdate);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
 
 // ----------- ROUTE DELETE PROJECT ------------
 
