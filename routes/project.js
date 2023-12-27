@@ -25,6 +25,7 @@ router.post(
 
       const {
         title,
+        date,
         description,
         order,
         tag,
@@ -32,11 +33,13 @@ router.post(
         repofront,
         figma,
         url,
+        video,
         front,
         back,
         database,
         server,
         packages,
+        isPublished,
       } = req.body;
 
       const preview = req.files?.preview;
@@ -44,6 +47,7 @@ router.post(
 
       const newProject = new Project({
         title: title,
+        date: date,
         description: description,
         order: order,
         tag: tag,
@@ -51,6 +55,7 @@ router.post(
         repofront: repofront,
         figma: figma,
         url: url,
+        video: video,
         details: [
           {
             front: front,
@@ -68,6 +73,7 @@ router.post(
             packages: packages,
           },
         ],
+        isPublished: isPublished,
         owner: req.user,
       });
 
@@ -141,27 +147,27 @@ router.post(
 //   }
 // );
 
-// ----------- ROUTE DELETE OFFER ------------
+// ----------- ROUTE DELETE PROJECT ------------
 
 // -----------ROUTE READ ALL PROJECTS ---------
 
 router.get("/projects", async (req, res) => {
   try {
-    const projects = await Project.find();
+    const projects = await Project.find({ isPublished: true }).sort({
+      order: -1,
+    });
     res.json(projects);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// ----------- ROUTE SORT OFFER ------------
+// ----------- ROUTE SORT PROJECT ------------
 
-// router.get("/offers", async (req, res) => {
+// router.get("/projects/sort", async (req, res) => {
 //   try {
-//     const { search, priceMin, priceMax, sort, page, displayedOffers } =
+//     const { publish, sort } =
 //       req.query;
-
-//     const searchRegexp = new RegExp(search, "i"); // Permet de créer une RegExp
 
 //     let findQueries = {};
 //     let sortQuery = {};

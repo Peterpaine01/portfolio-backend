@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const Project = mongoose.model("Project", {
   title: String,
+  date: String,
   description: String,
   order: Number,
   tag: Array,
@@ -14,6 +15,7 @@ const Project = mongoose.model("Project", {
   repofront: String,
   figma: String,
   url: String,
+  video: String,
   details: {
     front: String,
     back: String,
@@ -21,6 +23,7 @@ const Project = mongoose.model("Project", {
     server: String,
     packages: Array,
   },
+  isPublished: Boolean,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
