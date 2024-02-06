@@ -113,7 +113,7 @@ router.post(
   }
 );
 
-// ----------- ROUTE UPDATE OFFER ------------
+// ----------- ROUTE UPDATE PROJECT ------------
 
 router.put(
   "/project/update/:id",
@@ -167,7 +167,7 @@ router.put(
 
 // ----------- ROUTE DELETE PROJECT ------------
 
-// -----------ROUTE READ ALL PROJECTS ---------
+// ----------- ROUTE READ ALL PROJECTS ---------
 
 router.get("/projects", async (req, res) => {
   try {
@@ -175,6 +175,17 @@ router.get("/projects", async (req, res) => {
       order: -1,
     });
     res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ----------- ROUTE READ PROJECT BY ID ---------
+router.get("/project/:id", async (req, res) => {
+  try {
+    console.log(req.params);
+    const project = await Project.findById(req.params.id);
+    res.json(project);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
